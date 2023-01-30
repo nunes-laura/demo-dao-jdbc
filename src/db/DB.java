@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
@@ -19,7 +20,7 @@ public class DB {
 			Properties props = loadProperties();
 			String url = props.getProperty("dburl");
 			conn = DriverManager.getConnection(url, props);
-			System.out.println("Conexão bem sucedida!");}
+			System.out.println("Conexão com o banco de dados bem sucedida!");}
 			
 			catch (SQLException e) {
 				throw new DbException(e.getMessage()); }
@@ -38,34 +39,38 @@ public class DB {
 	}
 	
 	//fechar conexão
-	public static void closeConnections(Connection conn, Statement st) { 
+	public static void closeConnection(Connection conn) { 
 		try {
 		if (conn != null); //ja houve conexão, já foi aberta, então agora pode pedir para fechar
 		conn.close();
-		System.out.println("Conexão encerrada!");}
+		}
 		
 		catch(SQLException e) {
-			throw new DbException(e.getMessage()); } 
+			throw new DbException(e.getMessage()); }  }
 		
+		
+	public static void closeStatment(Statement st) {	
 		try {
 		if (st != null);
 		st.close();
-		System.out.println("Conexão Statement encerrada!");}
+		}
 	
 		catch(SQLException e) {
 		throw new DbException(e.getMessage()); }
-		
-		
-		//Não precisa colocar também pois o rs foi iniciado dentro do if e não tem problema
-		/*try {
+	}
+	
+	public static void closeResultSet (ResultSet rs) {
+		try {
 			if (rs != null);
 			rs.close();
-			System.out.println("Conexão ResultSet encerrada!");}
+			}
+		
 			catch(SQLException e) {
 			throw new DbException(e.getMessage()); }
-		*/
+	}
+		
 		
 		
 	}
 
-}
+
